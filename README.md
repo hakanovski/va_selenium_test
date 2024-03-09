@@ -1,32 +1,47 @@
-# VA.gov Selenium Automation Testing
+# Java Selenium Automation Project
 
-## Project Overview
+## Introduction
+This document provides a comprehensive guide on setting up and executing a Java-based Selenium Automation Project. The purpose of this project is to automate web browsing actions on the U.S. Department of Veterans Affairs website for testing purposes, ensuring all navigational elements function as expected.
 
-This repository contains a set of Selenium scripts written in Python for the purpose of practicing automation testing and gaining familiarity with Selenium's capabilities. The project focuses on automating user interaction scenarios on the VA.gov website, which is the official site for the United States Department of Veterans Affairs.
+## Pre-requisites
+To run this project, you will need the following environment and tools set up on your machine:
 
-The test cases aim to automate navigation and functionality verification within the site to ensure that key features are functioning as expected.
+- **Java Development Kit (JDK)**: Java SE Development Kit 11 or higher installed and configured. [Oracle JDK](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
+- **Java Runtime Environment (JRE)**: To execute Java applications, included in the JDK.
+- **Integrated Development Environment (IDE)**: IntelliJ IDEA or Eclipse with Maven support.
+- **Maven**: A software project management tool for managing project builds and dependencies. [Apache Maven Project](https://maven.apache.org/)
+- **Selenium WebDriver**: An open-source web automation tool. [Selenium HQ](https://www.selenium.dev/)
+- **ChromeDriver**: A standalone server that implements WebDriver's wire protocol for Chromium. [ChromeDriver - WebDriver for Chrome](https://sites.google.com/a/chromium.org/chromedriver/)
+- **JUnit**: A unit testing framework for Java applications. [JUnit 5](https://junit.org/junit5/)
 
-## Test Cases
+## Setup
+1. **Install JDK**: Download and install the Java Development Kit (JDK) from Oracle's official website. Set the JAVA_HOME environment variable to the JDK installation path.
+2. **Install IDE**: Download and install IntelliJ IDEA or Eclipse IDE.
+3. **Install Maven**: Ensure Maven is installed and configured in your system path.
+4. **Install Selenium WebDriver**: Add Selenium WebDriver dependencies to your Maven `pom.xml` file.
+5. **Install ChromeDriver**: Download ChromeDriver and set its path in the system environment variables.
+6. **Install JUnit**: Add JUnit dependencies to your Maven `pom.xml` file.
 
-- **Test Case 1**: Automates the process of navigating to the 'Contact Us' section and selecting the 'Call Us' option, then returning to the homepage.
-- **Test Case 2**: Focuses on using the 'Find a VA Location' feature by inputting a zip code, selecting a facility type, and searching for locations, followed by a return to the homepage.
+## Execution
+To execute tests, use the following commands:
+```bash
+mvn clean install
+mvn test
 
-## Technologies
+These commands will clean the project, install necessary dependencies, and run the tests defined in the project.
 
-- **Selenium WebDriver**: For browser automation.
-- **Python**: The scripting language used to write the tests.
-- **ChromeDriver**: The web driver for the Chrome browser used to perform test automation.
+Project Structure
 
-## Setup and Execution
+The project is structured as follows:
 
-To run these tests, you will need to have Python installed on your machine along with Selenium and ChromeDriver. Detailed instructions on setting up can be found in the Selenium documentation.
+	•	src/main/java: Contains the main Java code for the project.
+	•	src/test/java: Contains the Java test code.
+	•	pom.xml: Defines project dependencies and Maven plugins.
 
-After cloning the repository, you can run the scripts individually to execute the test cases.
+Project Objective
 
-## Contributing
+The objective of this automation project is to streamline the testing process of web applications, reducing manual efforts and improving accuracy in test execution. This particular project is configured to navigate through the U.S. Department of Veterans Affairs website, execute specific navigation actions, and validate the functionality of various web elements.
 
-Contributions to expand the test coverage or improve the existing scripts are welcome. Please ensure to follow the coding conventions and add comments to your code where necessary.
+Conclusion
 
-## License
-
-This project is open-sourced under the [MIT license](LICENSE).
+This automation project leverages the power of Java, Selenium WebDriver, and JUnit to perform comprehensive web testing. By automating the browser actions, we ensure that all functionalities work as intended, and any regressions are promptly caught.
