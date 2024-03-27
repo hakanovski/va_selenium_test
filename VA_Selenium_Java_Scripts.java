@@ -1,84 +1,65 @@
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import java.io.File;
 
-import java.util.concurrent.TimeUnit;
-
-public class VATestSuite {
+public class SoftWearEngineersTest {
     private WebDriver driver;
     private WebDriverWait wait;
 
-    public void setup() {
-        System.setProperty("webdriver.chrome.driver", "YOUR_CHROMEDRIVER_PATH");
-        driver = new ChromeDriver();
-        wait = new WebDriverWait(driver, 30);
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+    @BeforeMethod
+    public void setUp() {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--start-maximized");
+        System.setProperty("webdriver.chrome.driver", "path/to/your/chromedriver.exe");
+        driver = new ChromeDriver(options);
+        wait = new WebDriverWait(driver, 10);
     }
 
-    public void testCase1() {
-        driver.get("https://www.va.gov");
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("About VA"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Veterans Health Administration"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Wellness Programs"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Nutrition"))).click();
-        driver.findElement(By.cssSelector("a[href='https://www.va.gov']")).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("homepage")));
-    }
+    @Test
+    public void testScenario() throws Exception {
+        // Test Case 1: Open the website and validate it's loaded, then scroll down
+        driver.get("https://www.softwearengineers.com");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("body")));
+        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,1000)");
 
-    public void testCase2() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Find a VA Location"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("city-state"))).sendKeys("75071");
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("facility-type"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("option[value='health']"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("search-button"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("results")));
-        driver.findElement(By.cssSelector("a[href='https://www.va.gov']")).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("homepage")));
-    }
-
-    public void testCase3() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Contact Us"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Contact Us Online through Ask VA"))).click();
+        // Test Case 2: Scroll up, navigate to the shop, click the first product, take a screenshot, and go back
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0)");
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("shop-link-id"))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".first-product-selector"))).click();
+        File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(scrFile, new File("path/to/save/screenshot.jpg"));
         driver.navigate().back();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("homepage")));
-    }
 
-    public void testCase4() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("search"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("query"))).sendKeys("Hakan");
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("button[type='submit']"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("results")));
-        driver.findElement(By.cssSelector("a[href='https://www.va.gov']")).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("homepage")));
-    }
+        // Test Case 3: Click on the cart, proceed to checkout, and then go back
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("cart-icon-id"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("checkout-button-id"))).click();
+        driver.navigate().back();
 
-    public void testCase5() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("crisis-line"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("modal"))).isDisplayed();
-        TimeUnit.SECONDS.sleep(3);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("button.close"))).click();
-        TimeUnit.SECONDS.sleep(3);
-        driver.findElement(By.cssSelector("a[href='https://www.va.gov']")).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("homepage")));
-    }
+        // Test Case 4: Remove an item from the cart and verify notification
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("cart-icon-id"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("remove-item-id"))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-id")));
 
-    public void cleanUp() {
+        // Test Case 5: Quit the browser
         driver.quit();
     }
 
-    public static void main(String[] args) throws InterruptedException {
-        VATestSuite vaTestSuite = new VATestSuite();
-        vaTestSuite.setup();
-        
-        vaTestSuite.testCase1();
-        vaTestSuite.testCase2();
-        vaTestSuite.testCase3();
-        vaTestSuite.testCase4();
-        vaTestSuite.testCase5();
-        
-        vaTestSuite.cleanUp();
+    @AfterMethod
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
     }
 }
